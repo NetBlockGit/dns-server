@@ -1,0 +1,6 @@
+syntax = "proto3";
+option go_package = "/protos";
+
+package toggleblocker;
+message ToggleBlockerRequest {}
+message ToggleBlockerResponse {}
