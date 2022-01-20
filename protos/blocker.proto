@@ -1,9 +1,11 @@
 syntax = "proto3";
 
 import "protos/models/toggleblocker.proto";
+import "protos/models/getstats.proto";
 option go_package = "/protos";
 
 service Blocker {
   rpc ToggleBlocker(toggleblocker.ToggleBlockerRequest)
       returns (toggleblocker.ToggleBlockerResponse);
+  rpc GetStats(getstats.GetStatsRequest) returns (getstats.GetStatsResponse);
 }

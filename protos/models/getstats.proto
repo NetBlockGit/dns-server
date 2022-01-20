@@ -1,0 +1,10 @@
+syntax = "proto3";
+option go_package = "/protos";
+
+package getstats;
+message GetStatsRequest {}
+message Stats {
+  string hostname = 1;
+  bool blocked = 2;
+}
+message GetStatsResponse { repeated Stats stats = 1; }
