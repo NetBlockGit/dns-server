@@ -4,7 +4,9 @@ import (
 	"context"
 	"dnsserver/config/dnsblocker"
 	"dnsserver/config/mongodb"
-	"dnsserver/protos"
+	"dnsserver/generated/protos"
+	"dnsserver/generated/protos/toggleblocker"
+	"dnsserver/generated/protos/getstats"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -20,22 +22,22 @@ var (
 	ErrFailedToGetStats = status.Error(codes.Internal, "unexpected error occured")
 )
 
-func (s Server) ToggleBlocker(c context.Context, request *protos.ToggleBlockerRequest) (*protos.ToggleBlockerResponse, error) {
+func (s Server) ToggleBlocker(c context.Context, request *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error) {
 	dnsConfig := dnsblocker.CheckInitAndGet()
 	dnsConfig.ToggleBlocker()
-	return &protos.ToggleBlockerResponse{}, nil
+	return &toggleblocker.ToggleBlockerResponse{}, nil
 }
 
-func (s Server) GetStats(c context.Context, request *protos.GetStatsRequest) (*protos.GetStatsResponse, error) {
+func (s Server) GetStats(c context.Context, request *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error) {
 	col := mongodb.StatsCollection
 	res, err := col.Find(context.Background(), bson.D{})
 	if err != nil {
 		log.Printf("failed to find objects, error: %v", err.Error())
 		return nil, ErrFailedToGetStats
 	}
-	var stats []*protos.Stats
+	var stats []*getstats.Stats
 	res.All(context.Background(), &stats)
-	return &protos.GetStatsResponse{
+	return &getstats.GetStatsResponse{
 		Stats: stats,
 	}, nil
 }

@@ -2,6 +2,9 @@
 
 .DEFAULT_GOAL := protos
 protos:
-	protoc protos/blocker.proto --go_out=. --go-grpc_out=.
-	protoc protos/models/toggleblocker.proto --go_out=. --go-grpc_out=.
-	protoc protos/models/getstats.proto --go_out=. --go-grpc_out=.
+	mkdir -p out
+	protoc protos/blocker.proto --go_out=out --go-grpc_out=out
+	protoc protos/toggleblocker/toggleblocker.proto --go_out=out --go-grpc_out=out
+	protoc protos/getstats/getstats.proto --go_out=out --go-grpc_out=out
+	cp -r out/dnsserver/generated/protos generated/protos
+	rm -rf out

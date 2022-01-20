@@ -3,7 +3,7 @@ package grpcserver
 import (
 	"dnsserver/gRPC/blockerserver"
 	"dnsserver/gRPC/interceptor/auth"
-	"dnsserver/protos"
+	"dnsserver/generated/protos"
 	"fmt"
 	"log"
 	"net"
