@@ -6,7 +6,7 @@ import (
 	"dnsserver/config/env"
 	"dnsserver/config/mongodb"
 	"dnsserver/gRPC/blockerserver"
-	"dnsserver/protos"
+	"dnsserver/generated/protos/getstats"
 	"testing"
 	"time"
 
@@ -34,7 +34,7 @@ func Test_GetStats(t *testing.T) {
 	}
 
 	time.Sleep(2 * time.Second)
-	res, err := s.GetStats(context.Background(), &protos.GetStatsRequest{})
+	res, err := s.GetStats(context.Background(), &getstats.GetStatsRequest{})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -8,6 +8,8 @@ package protos
 
 import (
 	context "context"
+	getstats "dnsserver/generated/protos/getstats"
+	toggleblocker "dnsserver/generated/protos/toggleblocker"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,8 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BlockerClient interface {
-	ToggleBlocker(ctx context.Context, in *ToggleBlockerRequest, opts ...grpc.CallOption) (*ToggleBlockerResponse, error)
-	GetStats(ctx context.Context, in *GetStatsRequest, opts ...grpc.CallOption) (*GetStatsResponse, error)
+	ToggleBlocker(ctx context.Context, in *toggleblocker.ToggleBlockerRequest, opts ...grpc.CallOption) (*toggleblocker.ToggleBlockerResponse, error)
+	GetStats(ctx context.Context, in *getstats.GetStatsRequest, opts ...grpc.CallOption) (*getstats.GetStatsResponse, error)
 }
 
 type blockerClient struct {
@@ -34,8 +36,8 @@ func NewBlockerClient(cc grpc.ClientConnInterface) BlockerClient {
 	return &blockerClient{cc}
 }
 
-func (c *blockerClient) ToggleBlocker(ctx context.Context, in *ToggleBlockerRequest, opts ...grpc.CallOption) (*ToggleBlockerResponse, error) {
-	out := new(ToggleBlockerResponse)
+func (c *blockerClient) ToggleBlocker(ctx context.Context, in *toggleblocker.ToggleBlockerRequest, opts ...grpc.CallOption) (*toggleblocker.ToggleBlockerResponse, error) {
+	out := new(toggleblocker.ToggleBlockerResponse)
 	err := c.cc.Invoke(ctx, "/Blocker/ToggleBlocker", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -43,8 +45,8 @@ func (c *blockerClient) ToggleBlocker(ctx context.Context, in *ToggleBlockerRequ
 	return out, nil
 }
 
-func (c *blockerClient) GetStats(ctx context.Context, in *GetStatsRequest, opts ...grpc.CallOption) (*GetStatsResponse, error) {
-	out := new(GetStatsResponse)
+func (c *blockerClient) GetStats(ctx context.Context, in *getstats.GetStatsRequest, opts ...grpc.CallOption) (*getstats.GetStatsResponse, error) {
+	out := new(getstats.GetStatsResponse)
 	err := c.cc.Invoke(ctx, "/Blocker/GetStats", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,8 +58,8 @@ func (c *blockerClient) GetStats(ctx context.Context, in *GetStatsRequest, opts 
 // All implementations must embed UnimplementedBlockerServer
 // for forward compatibility
 type BlockerServer interface {
-	ToggleBlocker(context.Context, *ToggleBlockerRequest) (*ToggleBlockerResponse, error)
-	GetStats(context.Context, *GetStatsRequest) (*GetStatsResponse, error)
+	ToggleBlocker(context.Context, *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error)
+	GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error)
 	mustEmbedUnimplementedBlockerServer()
 }
 
@@ -65,10 +67,10 @@ type BlockerServer interface {
 type UnimplementedBlockerServer struct {
 }
 
-func (UnimplementedBlockerServer) ToggleBlocker(context.Context, *ToggleBlockerRequest) (*ToggleBlockerResponse, error) {
+func (UnimplementedBlockerServer) ToggleBlocker(context.Context, *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToggleBlocker not implemented")
 }
-func (UnimplementedBlockerServer) GetStats(context.Context, *GetStatsRequest) (*GetStatsResponse, error) {
+func (UnimplementedBlockerServer) GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStats not implemented")
 }
 func (UnimplementedBlockerServer) mustEmbedUnimplementedBlockerServer() {}
@@ -85,7 +87,7 @@ func RegisterBlockerServer(s grpc.ServiceRegistrar, srv BlockerServer) {
 }
 
 func _Blocker_ToggleBlocker_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ToggleBlockerRequest)
+	in := new(toggleblocker.ToggleBlockerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -97,13 +99,13 @@ func _Blocker_ToggleBlocker_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/Blocker/ToggleBlocker",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlockerServer).ToggleBlocker(ctx, req.(*ToggleBlockerRequest))
+		return srv.(BlockerServer).ToggleBlocker(ctx, req.(*toggleblocker.ToggleBlockerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Blocker_GetStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetStatsRequest)
+	in := new(getstats.GetStatsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +117,7 @@ func _Blocker_GetStats_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/Blocker/GetStats",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlockerServer).GetStats(ctx, req.(*GetStatsRequest))
+		return srv.(BlockerServer).GetStats(ctx, req.(*getstats.GetStatsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
