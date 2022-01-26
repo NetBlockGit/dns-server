@@ -2,13 +2,22 @@ package blockerserver
 
 import (
 	"context"
+	"dnsserver/config/authtoken"
 	"dnsserver/config/dnsblocker"
 	"dnsserver/config/mongodb"
 	"dnsserver/generated/protos"
-	"dnsserver/generated/protos/toggleblocker"
+	"dnsserver/generated/protos/getauthtoken"
 	"dnsserver/generated/protos/getstats"
+	"dnsserver/generated/protos/toggleblocker"
+	"encoding/hex"
+	"fmt"
 	"log"
+	"os"
+	"time"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/vk-rv/pvx"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,7 +28,8 @@ type Server struct {
 }
 
 var (
-	ErrFailedToGetStats = status.Error(codes.Internal, "unexpected error occured")
+	ErrFailedToGetStats     = status.Error(codes.Internal, "unexpected error occured")
+	ErrInvalidWalletAddress = status.Error(codes.PermissionDenied, "wallet address is invalid")
 )
 
 func (s Server) ToggleBlocker(c context.Context, request *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error) {
@@ -40,4 +50,59 @@ func (s Server) GetStats(c context.Context, request *getstats.GetStatsRequest) (
 	return &getstats.GetStatsResponse{
 		Stats: stats,
 	}, nil
+}
+
+func (s Server) GetAuthToken(c context.Context, request *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error) {
+	message := time.Now().Format("2006-Jan-02")
+	newMsg := fmt.Sprintf("\x19Ethereum Signed Message:\n%v%v", len(message), message)
+	newMsgHash := crypto.Keccak256Hash([]byte(newMsg))
+	signatureInBytes, err := hexutil.Decode(request.Signature)
+	if err != nil {
+		log.Printf("failed to decode, error: %v", err.Error())
+		return nil, status.Error(codes.Internal, "unexpected error occured")
+	}
+	if signatureInBytes[64] == 27 || signatureInBytes[64] == 28 {
+		signatureInBytes[64] -= 27
+	}
+	pubKey, err := crypto.SigToPub(newMsgHash.Bytes(), signatureInBytes)
+
+	if err != nil {
+		log.Printf("failed to decode, error: %v", err.Error())
+		return nil, status.Error(codes.Internal, "unexpected error occured")
+	}
+
+	//Get address from public key
+	walletAddress := crypto.PubkeyToAddress(*pubKey)
+
+	if walletAddress.String() != request.WalletAddress {
+		return nil, ErrInvalidWalletAddress
+	}
+	pasetoToken, err := generateToken(walletAddress.String())
+	if err != nil {
+		return nil, status.Error(codes.Internal, "unexpected error occured")
+	}
+	return &getauthtoken.GetAuthTokenResponse{
+		Token: pasetoToken,
+	}, nil
+}
+
+func generateToken(walletAddress string) (string, error) {
+
+	privKey, err := hex.DecodeString(os.Getenv("PASETO_PRIVATE_KEY"))
+
+	if err != nil {
+		return "", err
+	}
+	symK := pvx.NewSymmetricKey(privKey, pvx.Version4)
+	pv4 := pvx.NewPV4Local()
+	claims := authtoken.DnsBlockerClaims{
+		RegisteredClaims: pvx.RegisteredClaims{Expiration: pvx.TimePtr(time.Now().Add(24 * time.Hour))},
+		WalletAddress:    walletAddress,
+	}
+	token, err := pv4.Encrypt(symK, &claims)
+
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }

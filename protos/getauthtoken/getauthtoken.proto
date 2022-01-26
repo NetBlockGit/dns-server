@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package = "dnsserver/generated/protos/getauthtoken";
+
+package getauthtoken;
+message GetAuthTokenRequest {
+  string signature = 1;
+  string walletAddress = 2;
+}
+message GetAuthTokenResponse { string token = 1; }
