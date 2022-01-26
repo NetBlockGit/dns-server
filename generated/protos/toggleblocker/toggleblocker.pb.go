@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.27.1
 // 	protoc        v3.6.1
-// source: protos/models/toggleblocker.proto
+// source: protos/toggleblocker/toggleblocker.proto
 
 package toggleblocker
 
@@ -29,7 +29,7 @@ type ToggleBlockerRequest struct {
 func (x *ToggleBlockerRequest) Reset() {
 	*x = ToggleBlockerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_protos_models_toggleblocker_proto_msgTypes[0]
+		mi := &file_protos_toggleblocker_toggleblocker_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -42,7 +42,7 @@ func (x *ToggleBlockerRequest) String() string {
 func (*ToggleBlockerRequest) ProtoMessage() {}
 
 func (x *ToggleBlockerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_models_toggleblocker_proto_msgTypes[0]
+	mi := &file_protos_toggleblocker_toggleblocker_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *ToggleBlockerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleBlockerRequest.ProtoReflect.Descriptor instead.
 func (*ToggleBlockerRequest) Descriptor() ([]byte, []int) {
-	return file_protos_models_toggleblocker_proto_rawDescGZIP(), []int{0}
+	return file_protos_toggleblocker_toggleblocker_proto_rawDescGZIP(), []int{0}
 }
 
 type ToggleBlockerResponse struct {
@@ -67,7 +67,7 @@ type ToggleBlockerResponse struct {
 func (x *ToggleBlockerResponse) Reset() {
 	*x = ToggleBlockerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_protos_models_toggleblocker_proto_msgTypes[1]
+		mi := &file_protos_toggleblocker_toggleblocker_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -80,7 +80,7 @@ func (x *ToggleBlockerResponse) String() string {
 func (*ToggleBlockerResponse) ProtoMessage() {}
 
 func (x *ToggleBlockerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_models_toggleblocker_proto_msgTypes[1]
+	mi := &file_protos_toggleblocker_toggleblocker_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,42 +93,42 @@ func (x *ToggleBlockerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleBlockerResponse.ProtoReflect.Descriptor instead.
 func (*ToggleBlockerResponse) Descriptor() ([]byte, []int) {
-	return file_protos_models_toggleblocker_proto_rawDescGZIP(), []int{1}
+	return file_protos_toggleblocker_toggleblocker_proto_rawDescGZIP(), []int{1}
 }
 
-var File_protos_models_toggleblocker_proto protoreflect.FileDescriptor
+var File_protos_toggleblocker_toggleblocker_proto protoreflect.FileDescriptor
 
-var file_protos_models_toggleblocker_proto_rawDesc = []byte{
-	0x0a, 0x21, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x73, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2f,
-	0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62, 0x6c, 0x6f, 0x63, 0x6b,
-	0x65, 0x72, 0x22, 0x16, 0x0a, 0x14, 0x54, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x42, 0x6c, 0x6f, 0x63,
-	0x6b, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x17, 0x0a, 0x15, 0x54, 0x6f,
-	0x67, 0x67, 0x6c, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x42, 0x2a, 0x5a, 0x28, 0x64, 0x6e, 0x73, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72,
-	0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x73, 0x2f, 0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_protos_toggleblocker_toggleblocker_proto_rawDesc = []byte{
+	0x0a, 0x28, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x73, 0x2f, 0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62,
+	0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x2f, 0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62, 0x6c, 0x6f,
+	0x63, 0x6b, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x74, 0x6f, 0x67, 0x67,
+	0x6c, 0x65, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x22, 0x16, 0x0a, 0x14, 0x54, 0x6f, 0x67,
+	0x67, 0x6c, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x22, 0x17, 0x0a, 0x15, 0x54, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b,
+	0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x2a, 0x5a, 0x28, 0x64, 0x6e,
+	0x73, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65,
+	0x64, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x73, 0x2f, 0x74, 0x6f, 0x67, 0x67, 0x6c, 0x65, 0x62,
+	0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_protos_models_toggleblocker_proto_rawDescOnce sync.Once
-	file_protos_models_toggleblocker_proto_rawDescData = file_protos_models_toggleblocker_proto_rawDesc
+	file_protos_toggleblocker_toggleblocker_proto_rawDescOnce sync.Once
+	file_protos_toggleblocker_toggleblocker_proto_rawDescData = file_protos_toggleblocker_toggleblocker_proto_rawDesc
 )
 
-func file_protos_models_toggleblocker_proto_rawDescGZIP() []byte {
-	file_protos_models_toggleblocker_proto_rawDescOnce.Do(func() {
-		file_protos_models_toggleblocker_proto_rawDescData = protoimpl.X.CompressGZIP(file_protos_models_toggleblocker_proto_rawDescData)
+func file_protos_toggleblocker_toggleblocker_proto_rawDescGZIP() []byte {
+	file_protos_toggleblocker_toggleblocker_proto_rawDescOnce.Do(func() {
+		file_protos_toggleblocker_toggleblocker_proto_rawDescData = protoimpl.X.CompressGZIP(file_protos_toggleblocker_toggleblocker_proto_rawDescData)
 	})
-	return file_protos_models_toggleblocker_proto_rawDescData
+	return file_protos_toggleblocker_toggleblocker_proto_rawDescData
 }
 
-var file_protos_models_toggleblocker_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_protos_models_toggleblocker_proto_goTypes = []interface{}{
+var file_protos_toggleblocker_toggleblocker_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_protos_toggleblocker_toggleblocker_proto_goTypes = []interface{}{
 	(*ToggleBlockerRequest)(nil),  // 0: toggleblocker.ToggleBlockerRequest
 	(*ToggleBlockerResponse)(nil), // 1: toggleblocker.ToggleBlockerResponse
 }
-var file_protos_models_toggleblocker_proto_depIdxs = []int32{
+var file_protos_toggleblocker_toggleblocker_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -136,13 +136,13 @@ var file_protos_models_toggleblocker_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_protos_models_toggleblocker_proto_init() }
-func file_protos_models_toggleblocker_proto_init() {
-	if File_protos_models_toggleblocker_proto != nil {
+func init() { file_protos_toggleblocker_toggleblocker_proto_init() }
+func file_protos_toggleblocker_toggleblocker_proto_init() {
+	if File_protos_toggleblocker_toggleblocker_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_protos_models_toggleblocker_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_protos_toggleblocker_toggleblocker_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ToggleBlockerRequest); i {
 			case 0:
 				return &v.state
@@ -154,7 +154,7 @@ func file_protos_models_toggleblocker_proto_init() {
 				return nil
 			}
 		}
-		file_protos_models_toggleblocker_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_protos_toggleblocker_toggleblocker_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ToggleBlockerResponse); i {
 			case 0:
 				return &v.state
@@ -171,18 +171,18 @@ func file_protos_models_toggleblocker_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_protos_models_toggleblocker_proto_rawDesc,
+			RawDescriptor: file_protos_toggleblocker_toggleblocker_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_protos_models_toggleblocker_proto_goTypes,
-		DependencyIndexes: file_protos_models_toggleblocker_proto_depIdxs,
-		MessageInfos:      file_protos_models_toggleblocker_proto_msgTypes,
+		GoTypes:           file_protos_toggleblocker_toggleblocker_proto_goTypes,
+		DependencyIndexes: file_protos_toggleblocker_toggleblocker_proto_depIdxs,
+		MessageInfos:      file_protos_toggleblocker_toggleblocker_proto_msgTypes,
 	}.Build()
-	File_protos_models_toggleblocker_proto = out.File
-	file_protos_models_toggleblocker_proto_rawDesc = nil
-	file_protos_models_toggleblocker_proto_goTypes = nil
-	file_protos_models_toggleblocker_proto_depIdxs = nil
+	File_protos_toggleblocker_toggleblocker_proto = out.File
+	file_protos_toggleblocker_toggleblocker_proto_rawDesc = nil
+	file_protos_toggleblocker_toggleblocker_proto_goTypes = nil
+	file_protos_toggleblocker_toggleblocker_proto_depIdxs = nil
 }

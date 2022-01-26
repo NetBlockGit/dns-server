@@ -8,6 +8,7 @@ package protos
 
 import (
 	context "context"
+	getauthtoken "dnsserver/generated/protos/getauthtoken"
 	getstats "dnsserver/generated/protos/getstats"
 	toggleblocker "dnsserver/generated/protos/toggleblocker"
 	grpc "google.golang.org/grpc"
@@ -26,6 +27,7 @@ const _ = grpc.SupportPackageIsVersion7
 type BlockerClient interface {
 	ToggleBlocker(ctx context.Context, in *toggleblocker.ToggleBlockerRequest, opts ...grpc.CallOption) (*toggleblocker.ToggleBlockerResponse, error)
 	GetStats(ctx context.Context, in *getstats.GetStatsRequest, opts ...grpc.CallOption) (*getstats.GetStatsResponse, error)
+	GetAuthToken(ctx context.Context, in *getauthtoken.GetAuthTokenRequest, opts ...grpc.CallOption) (*getauthtoken.GetAuthTokenResponse, error)
 }
 
 type blockerClient struct {
@@ -54,12 +56,22 @@ func (c *blockerClient) GetStats(ctx context.Context, in *getstats.GetStatsReque
 	return out, nil
 }
 
+func (c *blockerClient) GetAuthToken(ctx context.Context, in *getauthtoken.GetAuthTokenRequest, opts ...grpc.CallOption) (*getauthtoken.GetAuthTokenResponse, error) {
+	out := new(getauthtoken.GetAuthTokenResponse)
+	err := c.cc.Invoke(ctx, "/Blocker/GetAuthToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlockerServer is the server API for Blocker service.
 // All implementations must embed UnimplementedBlockerServer
 // for forward compatibility
 type BlockerServer interface {
 	ToggleBlocker(context.Context, *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error)
 	GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error)
+	GetAuthToken(context.Context, *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error)
 	mustEmbedUnimplementedBlockerServer()
 }
 
@@ -72,6 +84,9 @@ func (UnimplementedBlockerServer) ToggleBlocker(context.Context, *toggleblocker.
 }
 func (UnimplementedBlockerServer) GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStats not implemented")
+}
+func (UnimplementedBlockerServer) GetAuthToken(context.Context, *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthToken not implemented")
 }
 func (UnimplementedBlockerServer) mustEmbedUnimplementedBlockerServer() {}
 
@@ -122,6 +137,24 @@ func _Blocker_GetStats_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Blocker_GetAuthToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(getauthtoken.GetAuthTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlockerServer).GetAuthToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Blocker/GetAuthToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlockerServer).GetAuthToken(ctx, req.(*getauthtoken.GetAuthTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Blocker_ServiceDesc is the grpc.ServiceDesc for Blocker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -136,6 +169,10 @@ var Blocker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetStats",
 			Handler:    _Blocker_GetStats_Handler,
+		},
+		{
+			MethodName: "GetAuthToken",
+			Handler:    _Blocker_GetAuthToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

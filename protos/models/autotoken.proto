@@ -1,6 +1,0 @@
-syntax = "proto3";
-option go_package = "/protos";
-
-package authtoken;
-message GetAuthTokenRequest { signature string = 1; }
-message GetAuthTokenResponse { token string = 1; }
