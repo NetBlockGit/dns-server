@@ -1,0 +1,11 @@
+services:
+  envoy:
+    build:
+      dockerfile: envoy.Dockerfile
+      context: .
+    ports:
+      - 8080:8080
+  app-service:
+    image: thisisommore/dnsserver
+    expose:
+      - 8000

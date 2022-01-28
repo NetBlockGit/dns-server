@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns-server
+spec:
+  selector:
+    matchLabels:
+      app: dns-server
+  template:
+    metadata:
+      labels:
+        app: dns-server
+    spec:
+      containers:
+        - name: dns-server
+          image: thisisommore/dnsserver:test
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: "/app/.env"
+              subPath: ".env"
+              name: env-file
+              readOnly: true
+
+      volumes:
+        - name: env-file
+          secret:
+            secretName: env-file

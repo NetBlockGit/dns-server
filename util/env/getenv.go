@@ -1,6 +1,7 @@
 package env
 
 import (
+	_ "dnsserver/config/env"
 	"log"
 	"os"
 )
