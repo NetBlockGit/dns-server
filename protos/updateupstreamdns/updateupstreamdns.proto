@@ -1,0 +1,6 @@
+syntax = "proto3";
+option go_package = "dnsserver/generated/protos/updateupstreamdns";
+
+package updateupstreamdns;
+message UpdateUpstreamDnsRequest { string newDnsServer = 1; }
+message UpdateUpstreamDnsResponse {}

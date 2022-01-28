@@ -9,6 +9,7 @@ import (
 	"dnsserver/generated/protos/getauthtoken"
 	"dnsserver/generated/protos/getstats"
 	"dnsserver/generated/protos/toggleblocker"
+	"dnsserver/generated/protos/updateupstreamdns"
 	"encoding/hex"
 	"fmt"
 	"log"
@@ -52,6 +53,11 @@ func (s Server) GetStats(c context.Context, request *getstats.GetStatsRequest) (
 	}, nil
 }
 
+func (s Server) UpdateUpstreamDns(c context.Context, request *updateupstreamdns.UpdateUpstreamDnsRequest) (*updateupstreamdns.UpdateUpstreamDnsResponse, error) {
+	dnsConfig := dnsblocker.CheckInitAndGet()
+	dnsConfig.UpstreamDns = request.NewDnsServer
+	return &updateupstreamdns.UpdateUpstreamDnsResponse{}, nil
+}
 func (s Server) GetAuthToken(c context.Context, request *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error) {
 	message := time.Now().Format("2006-Jan-02")
 	newMsg := fmt.Sprintf("\x19Ethereum Signed Message:\n%v%v", len(message), message)
