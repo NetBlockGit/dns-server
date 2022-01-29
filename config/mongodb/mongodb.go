@@ -19,5 +19,5 @@ func init() {
 		panic(err)
 	}
 	db := client.Database("dnsBlockerDatabase")
-	StatsCollection=db.Collection("stats")
+	StatsCollection = db.Collection("stats")
 }
