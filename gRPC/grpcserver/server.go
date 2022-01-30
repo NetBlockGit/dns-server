@@ -9,6 +9,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func Init() {
@@ -16,11 +17,11 @@ func Init() {
 	if err != nil {
 		log.Fatalf("failed to listen on tcp port %v", 8000)
 	}
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(auth.CheckAuth))
-	
-	protos.RegisterBlockerServer(grpcServer, blockerserver.Server{})
+	grpcBlockerServer := grpc.NewServer(grpc.UnaryInterceptor(auth.CheckAuth))
+	reflection.Register(grpcBlockerServer)
+	protos.RegisterBlockerServer(grpcBlockerServer, blockerserver.Server{})
 	log.Printf("starting to listen on port %v", 8000)
-	if err := grpcServer.Serve(lis); err != nil {
+	if err := grpcBlockerServer.Serve(lis); err != nil {
 		log.Fatalf("Cannot serve: %v", err)
 	}
 }

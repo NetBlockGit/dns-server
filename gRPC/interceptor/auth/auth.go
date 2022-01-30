@@ -16,6 +16,9 @@ var (
 )
 
 func CheckAuth(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	if info.FullMethod == "/Blocker/GetAuthToken" {
+		return handler(ctx, req)
+	}
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		log.Println("failed to get metadata from incoming context")
