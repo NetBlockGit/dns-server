@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: dns-server
+build:
+  artifacts:
+  - image: thisisommore/dnsserver
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - k8s/app-deploy.yml
+    - k8s/app-service.yml
