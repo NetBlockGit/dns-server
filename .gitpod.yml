@@ -9,6 +9,9 @@ tasks:
     command: |
       okteto context use https://cloud.okteto.com
       okteto context update-kubeconfig
+  - name: envoy proxy
+    command: |
+      envoy -c envoy.yaml
 vscode:
   extensions:
     - zxh404.vscode-proto3
