@@ -4,6 +4,7 @@ tasks:
   - init: |
       go install github.com/golang/protobuf/protoc-gen-go@latest
       go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+      curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
       go get ./...
   - name: workspace
     command: |
@@ -12,6 +13,8 @@ tasks:
   - name: envoy proxy
     command: |
       envoy -c envoy.yaml
+  - name: server
+    command: air
 vscode:
   extensions:
     - zxh404.vscode-proto3
