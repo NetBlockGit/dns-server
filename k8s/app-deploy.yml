@@ -13,18 +13,23 @@ spec:
     spec:
       containers:
         - name: dns-server
-          image: thisisommore/dnsserver:test
+          image: thisisommore/dnsserver
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           ports:
             - containerPort: 8000
+            - containerPort: 8080
+            - containerPort: 9901
           volumeMounts:
             - mountPath: "/app/.env"
               subPath: ".env"
               name: env-file
               readOnly: true
+          env:
+            - name: http2debug
+              value: "2"
 
       volumes:
         - name: env-file
