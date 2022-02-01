@@ -9,16 +9,20 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
 
 func TestCheckAuth(t *testing.T) {
 	envconfig.Init()
+	grpcInfo := &grpc.UnaryServerInfo{
+		FullMethod: "/BlockerService/Protected",
+	}
 	t.Run("should continue running next handlers if token is valid", func(t *testing.T) {
 		privateKeyHex := env.Get("PASETO_PRIVATE_KEY")
 		wAddr := env.Get("WALLET_ADDRESS_OF_AUTHORIZED")
 		cxt := createContext(privateKeyHex, wAddr)
-		resp, err := CheckAuth(cxt, nil, nil, handler)
+		resp, err := CheckAuth(cxt, nil, grpcInfo, handler)
 		if err != nil {
 			t.Fatalf("got error response from CheckAuth, error: %v", err)
 		}
@@ -29,7 +33,7 @@ func TestCheckAuth(t *testing.T) {
 		privateKeyHex := "68656c6c6f20686f772061726520796f75"
 		wAddr := env.Get("WALLET_ADDRESS_OF_AUTHORIZED")
 		cxt := createContext(privateKeyHex, wAddr)
-		resp, err := CheckAuth(cxt, nil, nil, handler)
+		resp, err := CheckAuth(cxt, nil, grpcInfo, handler)
 		assert.Equal(t, nil, resp)
 		assert.Contains(t, err.Error(), "failed to verify token")
 	})
@@ -38,7 +42,7 @@ func TestCheckAuth(t *testing.T) {
 		privateKeyHex := env.Get("PASETO_PRIVATE_KEY")
 		wAddr := "0x23F680e406CFda323Ef23d0594486811eE6b8587"
 		cxt := createContext(privateKeyHex, wAddr)
-		resp, err := CheckAuth(cxt, nil, nil, handler)
+		resp, err := CheckAuth(cxt, nil, grpcInfo, handler)
 		assert.Equal(t, nil, resp)
 		assert.Contains(t, err.Error(), "failed to verify token")
 	})
