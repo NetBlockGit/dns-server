@@ -3,6 +3,7 @@ syntax = "proto3";
 import "protos/toggleblocker/toggleblocker.proto";
 import "protos/getstats/getstats.proto";
 import "protos/getauthtoken/getauthtoken.proto";
+import "protos/updateupstreamdns/updateupstreamdns.proto";
 option go_package = "dnsserver/generated/protos";
 
 service Blocker {
@@ -11,4 +12,6 @@ service Blocker {
   rpc GetStats(getstats.GetStatsRequest) returns (getstats.GetStatsResponse);
   rpc GetAuthToken(getauthtoken.GetAuthTokenRequest)
       returns (getauthtoken.GetAuthTokenResponse);
+  rpc UpdateUpstreamDns(updateupstreamdns.UpdateUpstreamDnsRequest)
+      returns (updateupstreamdns.UpdateUpstreamDnsResponse);
 }

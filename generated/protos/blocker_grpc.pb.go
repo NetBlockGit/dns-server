@@ -11,6 +11,7 @@ import (
 	getauthtoken "dnsserver/generated/protos/getauthtoken"
 	getstats "dnsserver/generated/protos/getstats"
 	toggleblocker "dnsserver/generated/protos/toggleblocker"
+	updateupstreamdns "dnsserver/generated/protos/updateupstreamdns"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -28,6 +29,7 @@ type BlockerClient interface {
 	ToggleBlocker(ctx context.Context, in *toggleblocker.ToggleBlockerRequest, opts ...grpc.CallOption) (*toggleblocker.ToggleBlockerResponse, error)
 	GetStats(ctx context.Context, in *getstats.GetStatsRequest, opts ...grpc.CallOption) (*getstats.GetStatsResponse, error)
 	GetAuthToken(ctx context.Context, in *getauthtoken.GetAuthTokenRequest, opts ...grpc.CallOption) (*getauthtoken.GetAuthTokenResponse, error)
+	UpdateUpstreamDns(ctx context.Context, in *updateupstreamdns.UpdateUpstreamDnsRequest, opts ...grpc.CallOption) (*updateupstreamdns.UpdateUpstreamDnsResponse, error)
 }
 
 type blockerClient struct {
@@ -65,6 +67,15 @@ func (c *blockerClient) GetAuthToken(ctx context.Context, in *getauthtoken.GetAu
 	return out, nil
 }
 
+func (c *blockerClient) UpdateUpstreamDns(ctx context.Context, in *updateupstreamdns.UpdateUpstreamDnsRequest, opts ...grpc.CallOption) (*updateupstreamdns.UpdateUpstreamDnsResponse, error) {
+	out := new(updateupstreamdns.UpdateUpstreamDnsResponse)
+	err := c.cc.Invoke(ctx, "/Blocker/UpdateUpstreamDns", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlockerServer is the server API for Blocker service.
 // All implementations must embed UnimplementedBlockerServer
 // for forward compatibility
@@ -72,6 +83,7 @@ type BlockerServer interface {
 	ToggleBlocker(context.Context, *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error)
 	GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error)
 	GetAuthToken(context.Context, *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error)
+	UpdateUpstreamDns(context.Context, *updateupstreamdns.UpdateUpstreamDnsRequest) (*updateupstreamdns.UpdateUpstreamDnsResponse, error)
 	mustEmbedUnimplementedBlockerServer()
 }
 
@@ -87,6 +99,9 @@ func (UnimplementedBlockerServer) GetStats(context.Context, *getstats.GetStatsRe
 }
 func (UnimplementedBlockerServer) GetAuthToken(context.Context, *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAuthToken not implemented")
+}
+func (UnimplementedBlockerServer) UpdateUpstreamDns(context.Context, *updateupstreamdns.UpdateUpstreamDnsRequest) (*updateupstreamdns.UpdateUpstreamDnsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUpstreamDns not implemented")
 }
 func (UnimplementedBlockerServer) mustEmbedUnimplementedBlockerServer() {}
 
@@ -155,6 +170,24 @@ func _Blocker_GetAuthToken_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Blocker_UpdateUpstreamDns_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(updateupstreamdns.UpdateUpstreamDnsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlockerServer).UpdateUpstreamDns(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Blocker/UpdateUpstreamDns",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlockerServer).UpdateUpstreamDns(ctx, req.(*updateupstreamdns.UpdateUpstreamDnsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Blocker_ServiceDesc is the grpc.ServiceDesc for Blocker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -173,6 +206,10 @@ var Blocker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAuthToken",
 			Handler:    _Blocker_GetAuthToken_Handler,
+		},
+		{
+			MethodName: "UpdateUpstreamDns",
+			Handler:    _Blocker_UpdateUpstreamDns_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
