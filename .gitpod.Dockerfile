@@ -11,4 +11,4 @@ RUN sudo apt-get update
 RUN sudo apt-get install solc -y
 RUN sudo add-apt-repository -y ppa:ethereum/ethereum
 RUN sudo apt-get update
-RUN sudo apt-get install ethereum
+RUN sudo apt-get install ethereum -y
