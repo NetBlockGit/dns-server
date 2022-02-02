@@ -8,6 +8,7 @@ tasks:
       go get ./...
   - name: workspace
     command: |
+      ./generate_abi.sh
       docker login -u thisisommore -p $DOCKER_TOKEN
       okteto context use https://cloud.okteto.com
       okteto context update-kubeconfig
