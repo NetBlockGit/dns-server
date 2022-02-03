@@ -25,6 +25,5 @@ func Init() {
 	}
 	for e := range ch {
 		blockerConfig.BlockList = append(blockerConfig.BlockList, e.Hostname)
-		log.Println(blockerConfig.BlockList)
 	}
 }
