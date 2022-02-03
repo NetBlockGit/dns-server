@@ -10,6 +10,6 @@ import (
 func Init() {
 	env.Init()
 	dnsblocker.CheckInitAndGet()
-	go syncblocklist.Init()
+	syncblocklist.Init()
 	grpcserver.Init()
 }
