@@ -30,7 +30,7 @@ var (
 
 // BlocklistMetaData contains all meta data concerning the Blocklist contract.
 var BlocklistMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"newValue\",\"type\":\"string\"}],\"name\":\"addHostName\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"authorizeUser\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"authorizedUsers\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getHostList\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"hostlist\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"unAuthorizeUser\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"hostname\",\"type\":\"string\"}],\"name\":\"HostNameAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"HostNameDeleted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"newValue\",\"type\":\"string\"}],\"name\":\"addHostName\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"authorizeUser\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"authorizedUsers\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getHostList\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"hostlist\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"removeHostList\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"unAuthorizeUser\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // BlocklistABI is the input ABI used to generate the binding from.
@@ -345,6 +345,27 @@ func (_Blocklist *BlocklistTransactorSession) AuthorizeUser(userAddr common.Addr
 	return _Blocklist.Contract.AuthorizeUser(&_Blocklist.TransactOpts, userAddr)
 }
 
+// RemoveHostList is a paid mutator transaction binding the contract method 0x9b567cb6.
+//
+// Solidity: function removeHostList(uint256 index) returns()
+func (_Blocklist *BlocklistTransactor) RemoveHostList(opts *bind.TransactOpts, index *big.Int) (*types.Transaction, error) {
+	return _Blocklist.contract.Transact(opts, "removeHostList", index)
+}
+
+// RemoveHostList is a paid mutator transaction binding the contract method 0x9b567cb6.
+//
+// Solidity: function removeHostList(uint256 index) returns()
+func (_Blocklist *BlocklistSession) RemoveHostList(index *big.Int) (*types.Transaction, error) {
+	return _Blocklist.Contract.RemoveHostList(&_Blocklist.TransactOpts, index)
+}
+
+// RemoveHostList is a paid mutator transaction binding the contract method 0x9b567cb6.
+//
+// Solidity: function removeHostList(uint256 index) returns()
+func (_Blocklist *BlocklistTransactorSession) RemoveHostList(index *big.Int) (*types.Transaction, error) {
+	return _Blocklist.Contract.RemoveHostList(&_Blocklist.TransactOpts, index)
+}
+
 // UnAuthorizeUser is a paid mutator transaction binding the contract method 0x09151c7f.
 //
 // Solidity: function unAuthorizeUser(address userAddr) returns()
@@ -364,4 +385,272 @@ func (_Blocklist *BlocklistSession) UnAuthorizeUser(userAddr common.Address) (*t
 // Solidity: function unAuthorizeUser(address userAddr) returns()
 func (_Blocklist *BlocklistTransactorSession) UnAuthorizeUser(userAddr common.Address) (*types.Transaction, error) {
 	return _Blocklist.Contract.UnAuthorizeUser(&_Blocklist.TransactOpts, userAddr)
+}
+
+// BlocklistHostNameAddedIterator is returned from FilterHostNameAdded and is used to iterate over the raw logs and unpacked data for HostNameAdded events raised by the Blocklist contract.
+type BlocklistHostNameAddedIterator struct {
+	Event *BlocklistHostNameAdded // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *BlocklistHostNameAddedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(BlocklistHostNameAdded)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(BlocklistHostNameAdded)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *BlocklistHostNameAddedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *BlocklistHostNameAddedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// BlocklistHostNameAdded represents a HostNameAdded event raised by the Blocklist contract.
+type BlocklistHostNameAdded struct {
+	Hostname string
+	Raw      types.Log // Blockchain specific contextual infos
+}
+
+// FilterHostNameAdded is a free log retrieval operation binding the contract event 0x29205eb0c7ad84d9cfe64c7e47012225e8130a13a12e7fbf079f6ffc1b813a98.
+//
+// Solidity: event HostNameAdded(string hostname)
+func (_Blocklist *BlocklistFilterer) FilterHostNameAdded(opts *bind.FilterOpts) (*BlocklistHostNameAddedIterator, error) {
+
+	logs, sub, err := _Blocklist.contract.FilterLogs(opts, "HostNameAdded")
+	if err != nil {
+		return nil, err
+	}
+	return &BlocklistHostNameAddedIterator{contract: _Blocklist.contract, event: "HostNameAdded", logs: logs, sub: sub}, nil
+}
+
+// WatchHostNameAdded is a free log subscription operation binding the contract event 0x29205eb0c7ad84d9cfe64c7e47012225e8130a13a12e7fbf079f6ffc1b813a98.
+//
+// Solidity: event HostNameAdded(string hostname)
+func (_Blocklist *BlocklistFilterer) WatchHostNameAdded(opts *bind.WatchOpts, sink chan<- *BlocklistHostNameAdded) (event.Subscription, error) {
+
+	logs, sub, err := _Blocklist.contract.WatchLogs(opts, "HostNameAdded")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(BlocklistHostNameAdded)
+				if err := _Blocklist.contract.UnpackLog(event, "HostNameAdded", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseHostNameAdded is a log parse operation binding the contract event 0x29205eb0c7ad84d9cfe64c7e47012225e8130a13a12e7fbf079f6ffc1b813a98.
+//
+// Solidity: event HostNameAdded(string hostname)
+func (_Blocklist *BlocklistFilterer) ParseHostNameAdded(log types.Log) (*BlocklistHostNameAdded, error) {
+	event := new(BlocklistHostNameAdded)
+	if err := _Blocklist.contract.UnpackLog(event, "HostNameAdded", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// BlocklistHostNameDeletedIterator is returned from FilterHostNameDeleted and is used to iterate over the raw logs and unpacked data for HostNameDeleted events raised by the Blocklist contract.
+type BlocklistHostNameDeletedIterator struct {
+	Event *BlocklistHostNameDeleted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *BlocklistHostNameDeletedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(BlocklistHostNameDeleted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(BlocklistHostNameDeleted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *BlocklistHostNameDeletedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *BlocklistHostNameDeletedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// BlocklistHostNameDeleted represents a HostNameDeleted event raised by the Blocklist contract.
+type BlocklistHostNameDeleted struct {
+	Index *big.Int
+	Raw   types.Log // Blockchain specific contextual infos
+}
+
+// FilterHostNameDeleted is a free log retrieval operation binding the contract event 0x9838c313878774c7095f2ec13276b88235ab0bc2b3ac66435711b6407134fedb.
+//
+// Solidity: event HostNameDeleted(uint256 index)
+func (_Blocklist *BlocklistFilterer) FilterHostNameDeleted(opts *bind.FilterOpts) (*BlocklistHostNameDeletedIterator, error) {
+
+	logs, sub, err := _Blocklist.contract.FilterLogs(opts, "HostNameDeleted")
+	if err != nil {
+		return nil, err
+	}
+	return &BlocklistHostNameDeletedIterator{contract: _Blocklist.contract, event: "HostNameDeleted", logs: logs, sub: sub}, nil
+}
+
+// WatchHostNameDeleted is a free log subscription operation binding the contract event 0x9838c313878774c7095f2ec13276b88235ab0bc2b3ac66435711b6407134fedb.
+//
+// Solidity: event HostNameDeleted(uint256 index)
+func (_Blocklist *BlocklistFilterer) WatchHostNameDeleted(opts *bind.WatchOpts, sink chan<- *BlocklistHostNameDeleted) (event.Subscription, error) {
+
+	logs, sub, err := _Blocklist.contract.WatchLogs(opts, "HostNameDeleted")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(BlocklistHostNameDeleted)
+				if err := _Blocklist.contract.UnpackLog(event, "HostNameDeleted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseHostNameDeleted is a log parse operation binding the contract event 0x9838c313878774c7095f2ec13276b88235ab0bc2b3ac66435711b6407134fedb.
+//
+// Solidity: event HostNameDeleted(uint256 index)
+func (_Blocklist *BlocklistFilterer) ParseHostNameDeleted(log types.Log) (*BlocklistHostNameDeleted, error) {
+	event := new(BlocklistHostNameDeleted)
+	if err := _Blocklist.contract.UnpackLog(event, "HostNameDeleted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
 }
