@@ -7,7 +7,7 @@ import (
 )
 
 func Init() {
-	env.Init("")
+	env.Init(".env")
 	dnsblocker.CheckInitAndGet()
 	grpcserver.Init()
 }
