@@ -32,11 +32,13 @@ func CheckAuth(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo,
 	}
 	valid, err := authtoken.VerifyToken(token)
 	if err != nil {
+		log.Printf("failed to verify token: error :%v", err.Error())
 		return nil, ErrVerificationFailed
 	}
 	if valid {
 		return handler(ctx, req)
 	} else {
+		log.Printf("failed to verify token: error :%v", "token is not valid")
 		return nil, ErrVerificationFailed
 	}
 }

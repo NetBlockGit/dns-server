@@ -14,7 +14,7 @@ import (
 )
 
 func TestCheckAuth(t *testing.T) {
-	envconfig.Init()
+	envconfig.Init("../../../.env")
 	grpcInfo := &grpc.UnaryServerInfo{
 		FullMethod: "/BlockerService/Protected",
 	}
