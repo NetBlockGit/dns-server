@@ -5,6 +5,7 @@ import (
 	"dnsserver/config/authtoken"
 	"dnsserver/config/dnsblocker"
 	"dnsserver/config/mongodb"
+	"dnsserver/config/smartcontract"
 	"dnsserver/generated/protos"
 	"dnsserver/generated/protos/getauthtoken"
 	"dnsserver/generated/protos/getstats"
@@ -29,8 +30,9 @@ type Server struct {
 }
 
 var (
-	ErrFailedToGetStats     = status.Error(codes.Internal, "unexpected error occured")
+	ErrUnexpected           = status.Error(codes.Internal, "unexpected error occured")
 	ErrInvalidWalletAddress = status.Error(codes.PermissionDenied, "wallet address is invalid")
+	ErrNotAuthorized        = status.Error(codes.PermissionDenied, "wallet address is not authorized")
 )
 
 func (s Server) ToggleBlocker(c context.Context, request *toggleblocker.ToggleBlockerRequest) (*toggleblocker.ToggleBlockerResponse, error) {
@@ -44,7 +46,7 @@ func (s Server) GetStats(c context.Context, request *getstats.GetStatsRequest) (
 	res, err := col.Find(context.Background(), bson.D{})
 	if err != nil {
 		log.Printf("failed to find objects, error: %v", err.Error())
-		return nil, ErrFailedToGetStats
+		return nil, ErrUnexpected
 	}
 	var stats []*getstats.Stats
 	res.All(context.Background(), &stats)
@@ -82,6 +84,15 @@ func (s Server) GetAuthToken(c context.Context, request *getauthtoken.GetAuthTok
 
 	if walletAddress.String() != request.WalletAddress {
 		return nil, ErrInvalidWalletAddress
+	}
+
+	blocklistInstance := smartcontract.GetBlockListInstance(smartcontract.GetClient())
+	isUserAuthorized, err := blocklistInstance.AuthorizedUsers(nil, walletAddress)
+	if err != nil {
+		return nil, ErrUnexpected
+	}
+	if !isUserAuthorized {
+		return nil, ErrNotAuthorized
 	}
 	pasetoToken, err := generateToken(walletAddress.String())
 	if err != nil {
