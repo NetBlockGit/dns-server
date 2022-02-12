@@ -5,3 +5,11 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 RUN curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
     sudo install skaffold /usr/local/bin/
+
+RUN sudo curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin
+RUN sudo add-apt-repository ppa:ethereum/ethereum
+RUN sudo apt-get update
+RUN sudo apt-get install solc -y
+RUN sudo add-apt-repository -y ppa:ethereum/ethereum
+RUN sudo apt-get update
+RUN sudo apt-get install ethereum -y
