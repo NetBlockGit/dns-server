@@ -5,6 +5,7 @@ import (
 	"dnsserver/config/mongodb"
 	"dnsserver/util/env"
 	"log"
+	"os"
 
 	"github.com/NetBlockGit/dnsblocker/config"
 )
@@ -16,7 +17,12 @@ func CheckInitAndGet() *config.BlockerConfig {
 	if dnsBlocker != nil {
 		return dnsBlocker
 	}
-	qCh := make(chan config.QueryEvent)
+	var qCh chan config.QueryEvent
+	uri := os.Getenv("MONGO_DB_URI")
+	if uri != "" {
+		qCh = make(chan config.QueryEvent)
+		go saveStats(&qCh)
+	}
 	dnsBlocker = &config.BlockerConfig{
 		UpstreamDns:  "1.1.1.1:53",
 		BlockList:    []string{},
@@ -24,13 +30,18 @@ func CheckInitAndGet() *config.BlockerConfig {
 		Enabled:      true,
 		QueryChannel: qCh,
 	}
-	go saveStats(&qCh)
 	go dnsBlocker.StartDnsServer()
 	return dnsBlocker
 }
 
+var firstQueryHit = false
+
 func saveStats(ch *chan config.QueryEvent) {
 	for ev := range *ch {
+		if !firstQueryHit {
+			mongodb.Init()
+			firstQueryHit = true
+		}
 		col := mongodb.StatsCollection
 		_, err := col.InsertOne(context.Background(), ev)
 		if err != nil {

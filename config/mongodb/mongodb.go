@@ -2,7 +2,8 @@ package mongodb
 
 import (
 	"context"
-	"dnsserver/util/env"
+	"log"
+	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -10,9 +11,12 @@ import (
 
 var StatsCollection *mongo.Collection
 
-func init() {
-	uri := env.Get("MONGODB_URI")
-
+func Init() {
+	uri := os.Getenv("MONGO_DB_URI")
+	if uri == "" {
+		log.Println("MONGO_DB_URI is not set logs will not be recorded in database")
+		return
+	}
 	var err error
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 	if err != nil {
