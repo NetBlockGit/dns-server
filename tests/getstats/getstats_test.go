@@ -17,7 +17,7 @@ import (
 )
 
 func Test_GetStats(t *testing.T) {
-	env.Init()
+	env.Init("../../.env")
 	blockerConfig := dnsblocker.CheckInitAndGet()
 	time.Sleep(2 * time.Second)
 	s := blockerserver.Server{}

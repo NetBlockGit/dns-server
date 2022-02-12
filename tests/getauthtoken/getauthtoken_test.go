@@ -19,7 +19,7 @@ import (
 )
 
 func Test_GetAuthToken(t *testing.T) {
-	env.Init()
+	env.Init("../../.env")
 	dnsblocker.CheckInitAndGet()
 	time.Sleep(2 * time.Second)
 	s := blockerserver.Server{}

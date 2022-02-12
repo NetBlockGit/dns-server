@@ -3,6 +3,7 @@ package dnsblocker
 import (
 	"context"
 	"dnsserver/config/mongodb"
+	"dnsserver/util/env"
 	"log"
 
 	"github.com/NetBlockGit/dnsblocker/config"
@@ -19,7 +20,7 @@ func CheckInitAndGet() *config.BlockerConfig {
 	dnsBlocker = &config.BlockerConfig{
 		UpstreamDns:  "1.1.1.1:53",
 		BlockList:    []string{},
-		Addr:         "127.0.0.1:5302",
+		Addr:         env.Get("DNS_SERVER_URL"),
 		Enabled:      true,
 		QueryChannel: qCh,
 	}
