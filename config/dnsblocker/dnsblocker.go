@@ -22,6 +22,10 @@ func CheckInitAndGet() *config.BlockerConfig {
 	if uri != "" {
 		qCh = make(chan config.QueryEvent)
 		go saveStats(&qCh)
+	} else {
+		if uri == "" {
+			log.Println("MONGO_DB_URI is not set, logs will not be recorded in database")
+		}
 	}
 	dnsBlocker = &config.BlockerConfig{
 		UpstreamDns:  "1.1.1.1:53",
@@ -38,14 +42,18 @@ var firstQueryHit = false
 
 func saveStats(ch *chan config.QueryEvent) {
 	for ev := range *ch {
-		if !firstQueryHit {
-			mongodb.Init()
-			firstQueryHit = true
-		}
-		col := mongodb.StatsCollection
-		_, err := col.InsertOne(context.Background(), ev)
-		if err != nil {
-			log.Printf("failed to insert, error %v", err.Error())
-		}
+		go addHostnameToLogDb(ev)
+	}
+}
+
+func addHostnameToLogDb(ev config.QueryEvent) {
+	if !firstQueryHit {
+		mongodb.Init()
+		firstQueryHit = true
+	}
+	col := mongodb.StatsCollection
+	_, err := col.InsertOne(context.Background(), ev)
+	if err != nil {
+		log.Printf("failed to insert, error %v", err.Error())
 	}
 }
