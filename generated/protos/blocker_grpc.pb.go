@@ -9,6 +9,7 @@ package protos
 import (
 	context "context"
 	getauthtoken "dnsserver/generated/protos/getauthtoken"
+	getserverinfo "dnsserver/generated/protos/getserverinfo"
 	getstats "dnsserver/generated/protos/getstats"
 	toggleblocker "dnsserver/generated/protos/toggleblocker"
 	updateupstreamdns "dnsserver/generated/protos/updateupstreamdns"
@@ -30,6 +31,7 @@ type BlockerClient interface {
 	GetStats(ctx context.Context, in *getstats.GetStatsRequest, opts ...grpc.CallOption) (*getstats.GetStatsResponse, error)
 	GetAuthToken(ctx context.Context, in *getauthtoken.GetAuthTokenRequest, opts ...grpc.CallOption) (*getauthtoken.GetAuthTokenResponse, error)
 	UpdateUpstreamDns(ctx context.Context, in *updateupstreamdns.UpdateUpstreamDnsRequest, opts ...grpc.CallOption) (*updateupstreamdns.UpdateUpstreamDnsResponse, error)
+	GetServerInfo(ctx context.Context, in *getserverinfo.GetServerInfoRequest, opts ...grpc.CallOption) (*getserverinfo.GetServerInfoResponse, error)
 }
 
 type blockerClient struct {
@@ -76,6 +78,15 @@ func (c *blockerClient) UpdateUpstreamDns(ctx context.Context, in *updateupstrea
 	return out, nil
 }
 
+func (c *blockerClient) GetServerInfo(ctx context.Context, in *getserverinfo.GetServerInfoRequest, opts ...grpc.CallOption) (*getserverinfo.GetServerInfoResponse, error) {
+	out := new(getserverinfo.GetServerInfoResponse)
+	err := c.cc.Invoke(ctx, "/Blocker/GetServerInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlockerServer is the server API for Blocker service.
 // All implementations must embed UnimplementedBlockerServer
 // for forward compatibility
@@ -84,6 +95,7 @@ type BlockerServer interface {
 	GetStats(context.Context, *getstats.GetStatsRequest) (*getstats.GetStatsResponse, error)
 	GetAuthToken(context.Context, *getauthtoken.GetAuthTokenRequest) (*getauthtoken.GetAuthTokenResponse, error)
 	UpdateUpstreamDns(context.Context, *updateupstreamdns.UpdateUpstreamDnsRequest) (*updateupstreamdns.UpdateUpstreamDnsResponse, error)
+	GetServerInfo(context.Context, *getserverinfo.GetServerInfoRequest) (*getserverinfo.GetServerInfoResponse, error)
 	mustEmbedUnimplementedBlockerServer()
 }
 
@@ -102,6 +114,9 @@ func (UnimplementedBlockerServer) GetAuthToken(context.Context, *getauthtoken.Ge
 }
 func (UnimplementedBlockerServer) UpdateUpstreamDns(context.Context, *updateupstreamdns.UpdateUpstreamDnsRequest) (*updateupstreamdns.UpdateUpstreamDnsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUpstreamDns not implemented")
+}
+func (UnimplementedBlockerServer) GetServerInfo(context.Context, *getserverinfo.GetServerInfoRequest) (*getserverinfo.GetServerInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServerInfo not implemented")
 }
 func (UnimplementedBlockerServer) mustEmbedUnimplementedBlockerServer() {}
 
@@ -188,6 +203,24 @@ func _Blocker_UpdateUpstreamDns_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Blocker_GetServerInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(getserverinfo.GetServerInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlockerServer).GetServerInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Blocker/GetServerInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlockerServer).GetServerInfo(ctx, req.(*getserverinfo.GetServerInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Blocker_ServiceDesc is the grpc.ServiceDesc for Blocker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -210,6 +243,10 @@ var Blocker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUpstreamDns",
 			Handler:    _Blocker_UpdateUpstreamDns_Handler,
+		},
+		{
+			MethodName: "GetServerInfo",
+			Handler:    _Blocker_GetServerInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
