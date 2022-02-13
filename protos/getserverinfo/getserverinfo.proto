@@ -1,0 +1,6 @@
+syntax = "proto3";
+option go_package = "dnsserver/generated/protos/getserverinfo";
+
+package getserverinfo;
+message GetServerInfoRequest {}
+message GetServerInfoResponse { bool isActive = 1; }

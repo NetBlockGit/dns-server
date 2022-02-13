@@ -4,6 +4,7 @@ import "protos/toggleblocker/toggleblocker.proto";
 import "protos/getstats/getstats.proto";
 import "protos/getauthtoken/getauthtoken.proto";
 import "protos/updateupstreamdns/updateupstreamdns.proto";
+import "protos/getserverinfo/getserverinfo.proto";
 option go_package = "dnsserver/generated/protos";
 
 service Blocker {
@@ -14,4 +15,6 @@ service Blocker {
       returns (getauthtoken.GetAuthTokenResponse);
   rpc UpdateUpstreamDns(updateupstreamdns.UpdateUpstreamDnsRequest)
       returns (updateupstreamdns.UpdateUpstreamDnsResponse);
+  rpc GetServerInfo(getserverinfo.GetServerInfoRequest)
+      returns (getserverinfo.GetServerInfoResponse);
 }

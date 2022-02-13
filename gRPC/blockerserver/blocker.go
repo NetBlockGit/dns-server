@@ -8,6 +8,7 @@ import (
 	"dnsserver/config/smartcontract"
 	"dnsserver/generated/protos"
 	"dnsserver/generated/protos/getauthtoken"
+	"dnsserver/generated/protos/getserverinfo"
 	"dnsserver/generated/protos/getstats"
 	"dnsserver/generated/protos/toggleblocker"
 	"dnsserver/generated/protos/updateupstreamdns"
@@ -100,6 +101,12 @@ func (s Server) GetAuthToken(c context.Context, request *getauthtoken.GetAuthTok
 	}
 	return &getauthtoken.GetAuthTokenResponse{
 		Token: pasetoToken,
+	}, nil
+}
+
+func (s Server) GetServerInfo(c context.Context, request *getserverinfo.GetServerInfoRequest) (*getserverinfo.GetServerInfoResponse, error) {
+	return &getserverinfo.GetServerInfoResponse{
+		IsActive: dnsblocker.CheckInitAndGet().Enabled,
 	}, nil
 }
 
